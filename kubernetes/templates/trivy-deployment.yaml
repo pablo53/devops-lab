@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivy-server-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: TRIVYSERVER
+  template:
+    metadata:
+      name: trivy-server-lab
+      labels:
+        app: TRIVYSERVER
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.security.uid }}
+        runAsGroup: {{ .Values.security.gid }}
+      hostname: trivy-server
+      containers:
+        - name: trivy-server
+          image: aquasec/trivy:0.35.0
+          command: ["trivy"]
+          args: ["server", "--listen", "0.0.0.0:8080", "--cache-dir", "/var/local/lib/trivy/cache"]
+          volumeMounts:
+            - mountPath: /var/local/lib/trivy/cache
+              name: trivy-cache-vol
+      volumes:
+        - name: trivy-cache-vol
+          persistentVolumeClaim:
+            claimName: trivy-cache-pvc
+      restartPolicy: Always

@@ -9,6 +9,6 @@ spec:
   ports:
     - name: sonarqube-http-port
       protocol: TCP
-      port: 9000
-      targetPort: 9000
+      port: 9100
+      targetPort: 9100
       nodePort: 30900

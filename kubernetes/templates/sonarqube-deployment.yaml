@@ -21,7 +21,14 @@ spec:
         - name: sonarqube
           image: sonarqube:9.8.0-community
           ports:
-            - containerPort: 9000
+            - containerPort: 9100
+          env:
+            - name: SONAR_WEB_PORT
+              value: "9100"
+            - name: SONAR_WEB_HOST
+              value: "0.0.0.0"
+            - name: SONAR_WEB_CONTEXT
+              value: "/sonarqube"
           volumeMounts:
             - mountPath: /opt/sonarqube/data
               name: sonarqube-data-vol

@@ -18,7 +18,7 @@ Change this password immediately in "User Settings" -> "Password" and relogin.
 
 ### SonarQube
 
-SonarQube can be accessed from the host at `http://localhost:30900`. The default credentials on the first login are: username=`admin`, password=`admin`.
+SonarQube can be accessed from the host at `http://localhost:30900/sonarqube`. The default credentials on the first login are: username `admin` and password `admin`.
 Immediately, after the first successful login with these credentials, SonarQube asks to change them.
 
 ### Registry Server

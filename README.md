@@ -16,11 +16,20 @@ Beware that `initial_root_password` will automatically disappear after 24 hours!
 Next, login with this password as user root at `http://localhost:32080`.
 Change this password immediately in "User Settings" -> "Password" and relogin.
 
+### Redmine
+
+Redmine UI can be reached from host at `http://localhost:32300`. On first login attempt, use username `admin` and password `admin`.
+You will be immediately asked to change this default password.
+
+Redmine is backed up by PostgreSQL database located internally on `jdbc:postgresql://redmine-db-service:5432/redminedb`, externally - on `jdbc:postgresql://localhost:31432/redminedb` (user `redmine`, password `redmine123`).
+
 ### SonarQube
 
 SonarQube UI can be accessed from the host at `http://localhost:30900/sonarqube`. The default credentials on the first login are: username `admin` and password `admin`.
 Immediately, after the first successful login with these credentials, SonarQube asks to change them.
 If You encounter a strange behaviour of SonarQube UI, clean the cookies in Your browser.
+
+SomarQube is backed up by PostgreSQL database located internally on `jdbc:postgresql://sonarqube-db-service:5432/sonarqube`, externally - on `jdbc:postgresql://localhost:30432/sonarqube` (user `sonar`, password `sonar123`).
 
 **Caution**: Since this SonarQube is configured to work with PostgreSQL instead of the default H2, which is for evaluation purposes only, You may encounter the follwoing error:
 

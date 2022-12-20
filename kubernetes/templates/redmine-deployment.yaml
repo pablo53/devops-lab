@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redmine-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: REDMINE
+  template:
+    metadata:
+      name: redmine-lab
+      labels:
+        app: REDMINE
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.security.uid }}
+        runAsGroup: {{ .Values.security.gid }}
+      hostname: redmine
+      containers:
+        - name: redmine
+          image: redmine:5.0.4
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REDMINE_DB_POSTGRES
+              value: redmine-db-service
+            - name: REDMINE_DB_PORT
+              value: "5432"
+            - name: REDMINE_DB_DATABASE
+              value: redminedb
+            - name: REDMINE_DB_USERNAME
+              value: redmine
+            - name: REDMINE_DB_PASSWORD
+              value: redmine123
+          volumeMounts:
+            - mountPath: /usr/src/redmine/files
+              name: redmine-data-vol
+          resources:
+            limits:
+              cpu: 4
+            requests:
+              cpu: 1
+      volumes:
+        - name: redmine-data-vol
+          persistentVolumeClaim:
+            claimName: redmine-data-pvc
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redmine-db-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: REDMINEDB
+  template:
+    metadata:
+      name: redmine-db-lab
+      labels:
+        app: REDMINEDB
+    spec:
+      hostname: redmine-db
+      containers:
+        - name: redmine-db
+          image: postgres:15.1
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "redmine"
+            - name: POSTGRES_PASSWORD
+              value: "redmine123"
+            - name: POSTGRES_DB
+              value: "redminedb"
+            - name: PGDATA
+              value: "/var/lib/postgresql/data"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: redmine-db-data-vol
+      volumes:
+        - name: redmine-db-data-vol
+          persistentVolumeClaim:
+            claimName: redmine-db-data-pvc
+      restartPolicy: Always

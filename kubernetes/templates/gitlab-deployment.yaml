@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: GITLAB
+  template:
+    metadata:
+      name: gitlab-lab
+      labels:
+        app: GITLAB
+    spec:
+#      securityContext:
+#        runAsUser: {{ .Values.security.uid }}
+#        runAsGroup: {{ .Values.security.gid }}
+      hostname: gitlab
+      containers:
+        - name: gitlab
+          image: gitlab/gitlab-ce:15.6.2-ce.0
+          ports:
+            - containerPort: 22
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - mountPath: /etc/gitlab
+              name: gitlab-config-vol
+            - mountPath: /var/log/gitlab
+              name: gitlab-logs-vol
+            - mountPath: /var/opt/gitlab
+              name: gitlab-data-vol
+      volumes:
+        - name: gitlab-config-vol
+          persistentVolumeClaim:
+            claimName: gitlab-config-pvc
+        - name: gitlab-logs-vol
+          persistentVolumeClaim:
+            claimName: gitlab-logs-pvc
+        - name: gitlab-data-vol
+          persistentVolumeClaim:
+            claimName: gitlab-data-pvc
+      restartPolicy: Always

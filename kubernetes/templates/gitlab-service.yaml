@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-service
+spec:
+  selector:
+    app: GITLAB
+  type: NodePort
+  ports:
+    - name: gitlab-ssh-port
+      protocol: TCP
+      port: 22
+      targetPort: 22
+      nodePort: 32022
+    - name: gitlab-http-port
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 32080
+    - name: gitlab-ssl-port
+      protocol: TCP
+      port: 443
+      targetPort: 443
+      nodePort: 32443

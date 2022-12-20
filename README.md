@@ -1,6 +1,21 @@
 # devops-lab
 DevOps Laboratory Project - CI/CD experiments
 
+### GitLab
+
+GitLab Community Edition.
+
+After starting up GitLab for the first time, and before the first login, check the GitLab user "root" password:
+
+```
+sudo cat kubernetes/volumes/gitlab/config/initial_root_password
+```
+
+Beware that `initial_root_password` will automatically disappear after 24 hours!
+
+Next, login with this password as user root at 'http://localhost:32080'.
+Change this password immediately in "User Settings" -> "Password" and relogin.
+
 ### Registry Server
 
 Local OCI (Open Container Initiative, a.k.a. Docker) registry.

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: NEXUS
+  template:
+    metadata:
+      name: nexus-lab
+      labels:
+        app: NEXUS
+    spec:
+#      securityContext:
+#        runAsUser: {{ .Values.security.uid }}
+#        runAsGroup: {{ .Values.security.gid }}
+      hostname: nexus
+      containers:
+        - name: nexus
+          image: sonatype/nexus3:3.44.0
+          ports:
+            - containerPort: 8081
+          env:
+            - name: NEXUS_CONTEXT
+              value: nexus
+          volumeMounts:
+            - mountPath: /nexus-data
+              name: nexus-data-vol
+      volumes:
+        - name: nexus-data-vol
+          persistentVolumeClaim:
+            claimName: nexus-data-pvc
+      restartPolicy: Always

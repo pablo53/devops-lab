@@ -11,6 +11,10 @@ Service location from pods: `http://registry-server-service:5001`, from host: `h
 
 Browsing local Registry Server from host browser: `http://localhost:31182`
 
+### Nexus
+
+Browsing local Nexus repository from host browser: `http://localhost:31081/nexus/`. Internally, it is seen as `http://nexus-service:8081/nexus`.
+
 ### Trivy
 
 A Trivy server is deployed via Kubernetes and Helm. A trivy client can be

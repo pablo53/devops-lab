@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarqube-data-pv
+spec:
+  storageClassName: ""
+  volumeMode: Filesystem
+  capacity:
+    storage: 40Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.local.volumes.path }}/sonarqube/data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarqube-logs-pv
+spec:
+  storageClassName: ""
+  volumeMode: Filesystem
+  capacity:
+    storage: 4Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.local.volumes.path }}/sonarqube/logs
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarqube-extensions-pv
+spec:
+  storageClassName: ""
+  volumeMode: Filesystem
+  capacity:
+    storage: 4Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.local.volumes.path }}/sonarqube/extensions

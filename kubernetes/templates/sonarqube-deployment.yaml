@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarqube-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: SONARQUBE
+  template:
+    metadata:
+      name: sonarqube-lab
+      labels:
+        app: SONARQUBE
+    spec:
+#      securityContext:
+#        runAsUser: {{ .Values.security.uid }}
+#        runAsGroup: {{ .Values.security.gid }}
+      hostname: sonarqube
+      containers:
+        - name: sonarqube
+          image: sonarqube:9.8.0-community
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - mountPath: /opt/sonarqube/data
+              name: sonarqube-data-vol
+            - mountPath: /opt/sonarqube/logs
+              name: sonarqube-logs-vol
+            - mountPath: /opt/sonarqube/extensions
+              name: sonarqube-extensions-vol
+      volumes:
+        - name: sonarqube-data-vol
+          persistentVolumeClaim:
+            claimName: sonarqube-data-pvc
+        - name: sonarqube-logs-vol
+          persistentVolumeClaim:
+            claimName: sonarqube-logs-pvc
+        - name: sonarqube-extensions-vol
+          persistentVolumeClaim:
+            claimName: sonarqube-extensions-pvc
+      restartPolicy: Always

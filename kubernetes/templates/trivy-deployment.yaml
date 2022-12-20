@@ -20,8 +20,15 @@ spec:
       containers:
         - name: trivy-server
           image: aquasec/trivy:0.35.0
+          ports:
+            - containerPort: 8080
           command: ["trivy"]
           args: ["server", "--listen", "0.0.0.0:8080", "--cache-dir", "/var/local/lib/trivy/cache"]
+          env:
+            - name: TRIVY_INSECURE  # Allow for unknown certificates when using SSL?
+              value: "true"
+            - name: TRIVY_NON_SSL  # Use HTTP instead of HTTPS when connecting to a registry?
+              value: "true"
           volumeMounts:
             - mountPath: /var/local/lib/trivy/cache
               name: trivy-cache-vol

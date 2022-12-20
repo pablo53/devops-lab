@@ -13,5 +13,11 @@ trivy --debug --server http://trivy-server:8080 fs <dir_or_file>
 or, locally,
 
 ```
-trivy --debug --server http://trivy-server-service:31180 fs <dir_or_file>
+trivy --debug --server http://trivy-server-service:8080 fs <dir_or_file>
+```
+
+Scanning images in the registry in the local registry from another pod:
+
+```
+trivy --debug --server http://trivy-server-service:8080 image registry-server-service:5001/<NAME>:<TAG>
 ```

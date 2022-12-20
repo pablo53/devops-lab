@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-server-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: REGISTRYSERVER
+  template:
+    metadata:
+      name: registry-server-lab
+      labels:
+        app: REGISTRYSERVER
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.security.uid }}
+        runAsGroup: {{ .Values.security.gid }}
+      hostname: registry-server
+      containers:
+        - name: registry-server
+          image: registry:2.8.1
+          ports:
+            - containerPort: 5001
+          volumeMounts:
+            - mountPath: /var/lib/registry
+              name: registry-data-vol
+            - mountPath: /etc/docker/registry
+              name: registry-config-vol
+      volumes:
+        - name: registry-data-vol
+          persistentVolumeClaim:
+            claimName: registry-data-pvc
+        - name: registry-config-vol
+          configMap:
+            name: registry-config-cm
+            items:
+              - key: config.yml
+                path: config.yml
+      restartPolicy: Always

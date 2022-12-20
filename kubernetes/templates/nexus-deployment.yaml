@@ -28,6 +28,11 @@ spec:
           volumeMounts:
             - mountPath: /nexus-data
               name: nexus-data-vol
+          resources:
+            limits:
+              cpu: 4
+            requests:
+              cpu: 1
       volumes:
         - name: nexus-data-vol
           persistentVolumeClaim:

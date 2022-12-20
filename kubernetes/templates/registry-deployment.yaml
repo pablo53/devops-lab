@@ -38,3 +38,37 @@ spec:
               - key: config.yml
                 path: config.yml
       restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-ui-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: REGISTRYUI
+  template:
+    metadata:
+      name: registry-UI-lab
+      labels:
+        app: REGISTRYUI
+    spec:
+      hostname: registry-ui
+      containers:
+        - name: registry-ui
+          image: joxit/docker-registry-ui:2.3.3
+          ports:
+            - containerPort: 8082
+          env:
+            - name: REGISTRY_TITLE
+              value: "DevOps Laboratory Image Registry"
+            - name: REGISTRY_URL
+              value: {{ .Values.registry_url | default "http://registry-server-service:5001" }}
+            - name: SINGLE_REGISTRY
+              value: "true"
+            - name: DELETE_IMAGES
+              value: "true"
+            - name: NGINX_LISTEN_PORT
+              value: "8082"
+      restartPolicy: Always

@@ -17,6 +17,8 @@ data:
       addr: :5001
       headers:
         X-Content-Type-Options: [nosniff]
+        Access-Control-Allow-Origin: ['*']
+        Access-Control-Allow-Headers: ['*']
     health:
       storagedriver:
         enabled: true

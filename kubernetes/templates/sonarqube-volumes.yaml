@@ -42,3 +42,18 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: {{ .Values.local.volumes.path }}/sonarqube/extensions
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarqube-db-data-pv
+spec:
+  storageClassName: ""
+  volumeMode: Filesystem
+  capacity:
+    storage: 40Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.local.volumes.path }}/sonarqube/db-data

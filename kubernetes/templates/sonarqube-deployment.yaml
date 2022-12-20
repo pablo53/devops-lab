@@ -29,6 +29,12 @@ spec:
               value: "0.0.0.0"
             - name: SONAR_WEB_CONTEXT
               value: "/sonarqube"
+            - name: SONAR_JDBC_USERNAME
+              value: "sonar"
+            - name: SONAR_JDBC_PASSWORD
+              value: "sonar123"
+            - name: SONAR_JDBC_URL
+              value: "jdbc:postgresql://sonarqube-db-service:5432/sonarqube?currentSchema=public"
           volumeMounts:
             - mountPath: /opt/sonarqube/data
               name: sonarqube-data-vol
@@ -46,4 +52,43 @@ spec:
         - name: sonarqube-extensions-vol
           persistentVolumeClaim:
             claimName: sonarqube-extensions-pvc
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarqube-db-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: SONARQUBEDB
+  template:
+    metadata:
+      name: sonarqube-db-lab
+      labels:
+        app: SONARQUBEDB
+    spec:
+      hostname: sonarqube-db
+      containers:
+        - name: sonarqube-db
+          image: postgres:15.1
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "sonar"
+            - name: POSTGRES_PASSWORD
+              value: "sonar123"
+            - name: POSTGRES_DB
+              value: "sonarqube"
+            - name: PGDATA
+              value: "/var/lib/postgresql/data"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: sonarqube-db-data-vol
+      volumes:
+        - name: sonarqube-db-data-vol
+          persistentVolumeClaim:
+            claimName: sonarqube-db-data-pvc
       restartPolicy: Always

@@ -18,8 +18,19 @@ Change this password immediately in "User Settings" -> "Password" and relogin.
 
 ### SonarQube
 
-SonarQube can be accessed from the host at `http://localhost:30900/sonarqube`. The default credentials on the first login are: username `admin` and password `admin`.
+SonarQube UI can be accessed from the host at `http://localhost:30900/sonarqube`. The default credentials on the first login are: username `admin` and password `admin`.
 Immediately, after the first successful login with these credentials, SonarQube asks to change them.
+If You encounter a strange behaviour of SonarQube UI, clean the cookies in Your browser.
+
+**Caution**: Since this SonarQube is configured to work with PostgreSQL instead of the default H2, which is for evaluation purposes only, You may encounter the follwoing error:
+
+```
+ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
+bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+```
+
+The value is confirmed by peeking `sudo cat /proc/sys/vm/max_map_count`. If so, it must be increased by either `sudo sysctl -w vm.max_map_count=262144` (which is reset after the host restart), or by editing `/etc/sysctl.conf` and adding the line `vm.max_map_count=262144` (which is persistent).
+Note that this parameter should be increased in the OS hosting the image (e.g. hosting microk8s installation).
 
 ### Registry Server
 

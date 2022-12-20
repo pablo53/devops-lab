@@ -71,4 +71,6 @@ spec:
               value: "true"
             - name: NGINX_LISTEN_PORT
               value: "8082"
+            - name: SHOW_CONTENT_DIGEST
+              value: "true"
       restartPolicy: Always

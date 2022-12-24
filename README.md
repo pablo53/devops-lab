@@ -28,6 +28,14 @@ nginx['listen_addresses'] = ['*', '[::]']
 
 For this, You can enter `kubernetes/` dir and run script `gitlab-config.sh`.
 
+If You upload Your public key into Your GitLab account, You can clone a git repository via SSH port 32022 (as defined in `gitlab-services.yaml`) to the host.
+This means, however, that an example SSH link hint from GitLab `git@localhost:gitlab-instance-a35f1f4f/my-2nd-project.git`, should in fact mean the following command in the host:
+
+```
+git clone ssh://git@localhost:32022/gitlab-instance-a35f1f4f/my-2nd-project.git
+```
+Note the protocol prefix `ssh://`, additional `:32022` port definition, and slash `/` instead of colon `:` before the resource path.
+
 ### Redmine
 
 Redmine UI can be reached from host at `http://localhost:32300`. On first login attempt, use username `admin` and password `admin`.

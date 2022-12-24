@@ -16,6 +16,18 @@ Beware that `initial_root_password` will automatically disappear after 24 hours!
 Next, login with this password as user root at `http://localhost:32080`.
 Change this password immediately in "User Settings" -> "Password" and relogin.
 
+After You run GitLab for the first time, fix its configuration.
+It needs the following conent in `/etc/gitlab/gitlab.rb`:
+
+```
+external_url 'http://localhost:32080'
+nginx['listen_port'] = 80
+nginx['listen_https'] = false
+nginx['listen_addresses'] = ['*', '[::]']
+```
+
+For this, You can enter `kubernetes/` dir and run script `gitlab-config.sh`.
+
 ### Redmine
 
 Redmine UI can be reached from host at `http://localhost:32300`. On first login attempt, use username `admin` and password `admin`.
@@ -25,7 +37,7 @@ Redmine is backed up by PostgreSQL database located internally on `jdbc:postgres
 
 ### SonarQube
 
-SonarQube UI can be accessed from the host at `http://localhost:30900/sonarqube`. The default credentials on the first login are: username `admin` and password `admin`.
+SonarQube UI can be accessed from the host at `http://localhost:30900/sonarqube` or, locaaly, at `http://sonarqube-service:9100/sonarqube`. The default credentials on the first login are: username `admin` and password `admin`.
 Immediately, after the first successful login with these credentials, SonarQube asks to change them.
 If You encounter a strange behaviour of SonarQube UI, clean the cookies in Your browser.
 

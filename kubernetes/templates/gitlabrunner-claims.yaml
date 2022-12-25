@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitlabrunner-docker-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: gitlabrunner-docker-pv
+  resources:
+    requests:
+      storage: 40Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitlabrunner-config-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: gitlabrunner-config-pv
+  resources:
+    requests:
+      storage: 128Mi

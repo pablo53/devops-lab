@@ -3,7 +3,7 @@ DevOps Laboratory Project - CI/CD experiments
 
 ### GitLab
 
-GitLab Community Edition.
+#### GitLab Community Edition.
 
 After starting up GitLab for the first time, and before the first login, check the GitLab user "root" password:
 
@@ -35,6 +35,41 @@ This means, however, that an example SSH link hint from GitLab `git@localhost:gi
 git clone ssh://git@localhost:32022/gitlab-instance-a35f1f4f/my-2nd-project.git
 ```
 Note the protocol prefix `ssh://`, additional `:32022` port definition, and slash `/` instead of colon `:` before the resource path.
+
+#### GitLab runners
+
+Apart from the GitLab server, You need at least one GitLab runner to make CI/CD work (gitlab pipelines, as defined in `.gitlab-ci.yml` in git repositories stored by GitLab).
+
+You can download a binary `https://s3.amazonaws.com/gitlab-runner-downloads/v15.7.0/binaries/gitlab-runner-linux-amd64` (amd set its execution flag, if necessary) to run on any Linux/x86_64 machine.
+
+Next, register it:
+
+```
+./gitlab-runner-amd64 register --url http://localhost:30080 --registration-token <reg_token>
+```
+
+where `<reg_token>` is taken from "Admin Area" -> "Overview" -> "Runners" -> "Register an instance runner" drop-down list.
+
+Finally, start the runner:
+
+```
+./gitlab-runner-amd64 register run
+```
+
+Instead of the above drop-in package with `gitlabb-runner` binaries, You can use...
+
+### GitLab Runner
+
+GitLab runner, provided here as a kubernetes service, must be registered with GitLab.
+Run script:
+
+```
+./gitlab-runner-config.sh <reg_token> [<tag_list>]
+```
+
+where `<reg_token>` is the registration token disclosed to an administrator via GitLab UI,
+and the optional `[<tag_list>]` is the list of tags associated with this GitLab runner.
+This registration script also makes the GitLab runner accept untagged jobs.
 
 ### Redmine
 

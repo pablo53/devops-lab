@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlabrunner-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: GITLABRUNNER
+  template:
+    metadata:
+      name: gitlabrunner-lab
+      labels:
+        app: GITLABRUNNER
+    spec:
+      securityContext:
+        fsGroup: {{ .Values.security.gid }}
+#        runAsUser: {{ .Values.security.uid }}
+#        runAsGroup: {{ .Values.security.gid }}
+      hostname: gitlab-runner
+      containers:
+        - name: gitlab-runner
+          image: gitlab/gitlab-runner:v15.7.1
+          ports:
+            - containerPort: 8093
+          volumeMounts:
+            - mountPath: /root/.docker/machine
+              name: gitlabrunner-docker-vol
+            - mountPath: /etc/gitlab-runner
+              name: gitlabrunner-config-vol
+      volumes:
+        - name: gitlabrunner-docker-vol
+          persistentVolumeClaim:
+            claimName: gitlabrunner-docker-pvc
+        - name: gitlabrunner-config-vol
+          persistentVolumeClaim:
+            claimName: gitlabrunner-config-pvc
+      restartPolicy: Always

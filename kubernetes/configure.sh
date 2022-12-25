@@ -11,12 +11,18 @@
 #
 ## GitLab
 
-mkdir -p $GITLAB_RUNNER_CONFIG
-mkdir -p $GITLAB_RUNNER_DATA
-mkdir -p $GITLAB_RUNNER_LOGS
+mkdir -p $GITLAB_CONFIG
+mkdir -p $GITLAB_DATA
+mkdir -p $GITLAB_LOGS
 
 #
 ## GitLab Runner
 
 mkdir -p $GITLAB_RUNNER_DOCKER
 mkdir -p $GITLAB_RUNNER_CONFIG
+
+#
+## Jenkins
+
+mkdir -p $JENKINS_DATA_DIR
+chmod a+r,a+w,a+x $JENKINS_DATA_DIR

@@ -71,6 +71,14 @@ where `<reg_token>` is the registration token disclosed to an administrator via 
 and the optional `[<tag_list>]` is the list of tags associated with this GitLab runner.
 This registration script also makes the GitLab runner accept untagged jobs.
 
+### Jenkins
+
+Jenkins UI link on host machine is `http://localhost:30880`.
+
+On the first run, Jenkins generates password stored locally in `/var/jenkins_home/secrets/initialAdminPassword` file
+(which maps to `kubernetes/volumes/jenkins/data/secrets/initialAdminPassword`).
+You can also see it from the container log.
+
 ### Redmine
 
 Redmine UI can be reached from host at `http://localhost:32300`. On first login attempt, use username `admin` and password `admin`.

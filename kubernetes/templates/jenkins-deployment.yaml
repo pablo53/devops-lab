@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: JENKINS
+  template:
+    metadata:
+      name: jenkins-lab
+      labels:
+        app: JENKINS
+    spec:
+      securityContext:
+#        fsGroup: {{ .Values.security.gid }}
+#        runAsUser: {{ .Values.security.uid }}
+#        runAsGroup: {{ .Values.security.gid }}
+      hostname: jenkins
+      containers:
+        - name: jenkins
+          image: jenkins/jenkins:2.383
+          ports:
+            - containerPort: 8080
+            - containerPort: 50000
+          volumeMounts:
+            - mountPath: /var/jenkins_home
+              name: jenkins-data-vol
+      volumes:
+        - name: jenkins-data-vol
+          persistentVolumeClaim:
+            claimName: jenkins-data-pvc
+      restartPolicy: Always
